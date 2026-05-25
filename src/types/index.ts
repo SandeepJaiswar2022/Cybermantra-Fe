@@ -9,17 +9,11 @@ export interface User {
   lastName: string;
   avatarUrl?: string;
   role: Role;
-  isEmailVerified: boolean;
-  createdAt: string;
-  updatedAt: string;
+  isEmailVerified?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-export interface AuthState {
-  user: User | null;
-  accessToken: string | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-}
 
 export interface LoginRequest {
   email: string;
@@ -34,9 +28,18 @@ export interface RegisterRequest {
   role?: Role;
 }
 
-export interface AuthResponse {
+export interface LoginSuccessData {
   accessToken: string;
-  user: User;
+  
+}
+
+export interface AuthResponse {
+  success: boolean;
+  message: string;
+  data: {
+    accessToken: string;
+  } & User;
+  timestamp: string;
 }
 
 // ─── Course Types ─────────────────────────────────────────────────────────────

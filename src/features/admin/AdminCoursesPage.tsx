@@ -79,8 +79,8 @@ export default function AdminCoursesPage() {
               key={f.value}
               onClick={() => setStatusFilter(f.value)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${statusFilter === f.value
-                  ? 'bg-primary text-primary-foreground border-primary'
-                  : 'border-border text-muted-foreground hover:text-foreground'
+                ? 'bg-primary text-primary-foreground border-primary'
+                : 'border-border text-muted-foreground hover:text-foreground'
                 }`}
             >
               {f.label}
