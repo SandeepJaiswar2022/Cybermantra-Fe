@@ -57,10 +57,6 @@ export function useLogin() {
         navigate(ROUTES.STUDENT.DASHBOARD);
       }
     },
-
-    onError: () => {
-      // handled globally
-    },
   });
 }
 
