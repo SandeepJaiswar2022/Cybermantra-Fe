@@ -11,6 +11,7 @@ import { ProtectedRoute, GuestRoute } from '@/app/routes/ProtectedRoute';
 // Eagerly loaded auth pages (small, needed fast)
 import LoginPage from '@/app/pages/LoginPage';
 import RegisterPage from '@/app/pages/RegisterPage';
+import { useProactiveTokenRefresh } from '@/hooks/useProactiveTokenRefresh';
 
 // Lazy loaded pages
 const LandingPage = lazy(() => import('@/app/pages/LandingPage'));
@@ -48,6 +49,7 @@ function PageLoader() {
 }
 
 export function AppRouter() {
+  useProactiveTokenRefresh();
   return (
     <BrowserRouter>
       <Suspense fallback={<PageLoader />}>

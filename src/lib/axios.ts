@@ -5,6 +5,7 @@ import axios, {
 } from 'axios';
 import { API_BASE_URL } from '@/constants';
 import { useAuthStore } from '@/store/authStore';
+import { AuthResponse } from '@/types';
 
 // ─── Token Management ─────────────────────────────────────────────────────────
 
@@ -50,7 +51,6 @@ apiClient.interceptors.request.use(
 );
 
 // ─── Response Interceptor ─────────────────────────────────────────────────────
-
 apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
@@ -83,14 +83,14 @@ apiClient.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      const response = await axios.post<{ accessToken: string }>(
+      const response = await axios.post<AuthResponse>(
         `${API_BASE_URL}/auth/refresh`,
         {},
         { withCredentials: true }
       );
 
-      const { accessToken } = response.data;
-      useAuthStore.getState().setAccessToken(accessToken);
+      const { accessToken, expiresIn } = response.data.data; // ← .data.data
+      useAuthStore.getState().setAccessToken(accessToken, expiresIn);
       processQueue(null, accessToken);
 
       originalRequest.headers.Authorization = `Bearer ${accessToken}`;
@@ -98,12 +98,9 @@ apiClient.interceptors.response.use(
     } catch (refreshError) {
       processQueue(refreshError, null);
       useAuthStore.getState().logout();
-
-      // Redirect to login
       if (typeof window !== 'undefined') {
         window.location.href = '/login?session=expired';
       }
-
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;

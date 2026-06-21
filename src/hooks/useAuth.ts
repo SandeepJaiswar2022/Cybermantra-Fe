@@ -28,34 +28,19 @@ export function useLogin() {
 
   return useMutation({
     mutationFn: (data: LoginRequest) => authService.login(data),
-
     onSuccess: (response) => {
-      const authData = response.data;
+      const { accessToken, expiresIn, user } = response.data;
 
-      const user: User = {
-        id: authData.id,
-        email: authData.email,
-        firstName: authData.firstName,
-        lastName: authData.lastName,
-        role: authData.role,
-        isEmailVerified: authData.isEmailVerified,
-      };
+      console.log("response.data after login :: ", response.data);
 
-      setAuth(user, authData.accessToken);
 
+      setAuth(user, accessToken, expiresIn); // pass expiresIn to store
       queryClient.setQueryData(QUERY_KEYS.AUTH.ME, user);
-
       toast.success(`Welcome back, ${user.firstName}!`);
 
-      const role = user.role;
-
-      if (role === 'ADMIN') {
-        navigate(ROUTES.ADMIN.DASHBOARD);
-      } else if (role === 'INSTRUCTOR') {
-        navigate(ROUTES.INSTRUCTOR.DASHBOARD);
-      } else {
-        navigate(ROUTES.STUDENT.DASHBOARD);
-      }
+      if (user.role === 'ADMIN') navigate(ROUTES.ADMIN.DASHBOARD);
+      else if (user.role === 'INSTRUCTOR') navigate(ROUTES.INSTRUCTOR.DASHBOARD);
+      else navigate(ROUTES.STUDENT.DASHBOARD);
     },
   });
 }
@@ -64,17 +49,14 @@ export function useLogin() {
 // ─── Register ─────────────────────────────────────────────────────────────────
 
 export function useRegister() {
-  const { setAuth } = useAuthStore();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: RegisterRequest) => authService.register(data),
-    onSuccess: (data) => {
-      setAuth(data.user, data.accessToken);
-      queryClient.setQueryData(QUERY_KEYS.AUTH.ME, data.user);
+    onSuccess: () => {
+      // Register only returns email now — no auth data
       toast.success('Account created! Please verify your email.');
-      navigate(ROUTES.STUDENT.DASHBOARD);
+      navigate(ROUTES.LOGIN);
     },
   });
 }

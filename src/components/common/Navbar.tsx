@@ -30,6 +30,8 @@ import {
 
 export function Navbar() {
   const { user, isAuthenticated } = useAuthStore();
+  console.log("logged in user :: ", user);
+
   const { theme, toggleTheme, toggleMobileMenu } = useUIStore();
   const { mutate: logout } = useLogout();
   const navigate = useNavigate();
@@ -40,8 +42,8 @@ export function Navbar() {
   const dashboardRoute = user?.role === 'ADMIN'
     ? ROUTES.ADMIN.DASHBOARD
     : user?.role === 'INSTRUCTOR'
-    ? ROUTES.INSTRUCTOR.DASHBOARD
-    : ROUTES.STUDENT.DASHBOARD;
+      ? ROUTES.INSTRUCTOR.DASHBOARD
+      : ROUTES.STUDENT.DASHBOARD;
 
   return (
     <header className="sticky top-0 z-40 w-full">

@@ -9,7 +9,7 @@ export interface User {
   lastName: string;
   avatarUrl?: string;
   role: Role;
-  isEmailVerified?: boolean;
+  isEmailVerified: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -30,7 +30,7 @@ export interface RegisterRequest {
 
 export interface LoginSuccessData {
   accessToken: string;
-  
+
 }
 
 export interface AuthResponse {
@@ -38,10 +38,11 @@ export interface AuthResponse {
   message: string;
   data: {
     accessToken: string;
-  } & User;
+    expiresIn: number; // seconds
+    user: User;
+  };
   timestamp: string;
 }
-
 // ─── Course Types ─────────────────────────────────────────────────────────────
 
 export type CourseStatus = 'DRAFT' | 'SUBMITTED' | 'PUBLISHED' | 'REJECTED' | 'ARCHIVED';
