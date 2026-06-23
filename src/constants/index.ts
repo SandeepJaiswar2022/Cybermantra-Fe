@@ -56,6 +56,8 @@ export const QUERY_KEYS = {
   CATEGORIES: {
     ALL: ['categories'] as const,
     DETAIL: (id: string) => ['categories', id] as const,
+    SUMMARY: ['categories', 'summary'] as const,
+    PARENTS: ['categories', 'parents'] as const,
   },
   ENROLLMENTS: {
     MY: ['enrollments', 'my'] as const,

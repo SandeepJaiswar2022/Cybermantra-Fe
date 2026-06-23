@@ -58,7 +58,7 @@ export default function CourseDetailPage() {
   const discount = Math.round((1 - course.price / course.originalPrice) * 100);
 
   return (
-    <div className="max-w-screen-xl mx-auto px-4 py-10">
+    <div className="max-w-7xl mx-auto px-4 py-10">
       {/* Back */}
       <Button variant="ghost" size="sm" asChild className="mb-6 -ml-2">
         <Link to={ROUTES.COURSES}>
